@@ -1,18 +1,13 @@
-title: Azure Developer College
+title: Basic Containers 
 patterns: ['**/*.md', '!**/node_modules', '!templates/**']
 base: /trainingdays/
 themeConfig:
-  repo: 'azuredevcollege/trainingdays'
+  repo: 'basiccontainers/basiccontainer.github.io'
   editLinks: true
   sidebar:
     [
       ['./', 'Home'],
-      './day1/',
-      './day2/',
-      './day3/',
-      './day4/',
-      './day5/',
-      './day6/',
-      './day7/',
+      './webapps/',
+      './aks/',
     ]
 plugins: [['vuepress-plugin-code-copy', true]]
