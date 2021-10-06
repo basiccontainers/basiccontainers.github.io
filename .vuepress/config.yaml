@@ -1,6 +1,6 @@
 title: Basic Containers 
 patterns: ['**/*.md', '!**/node_modules', '!templates/**']
-base: /trainingdays/
+base: /basiccontainer/
 themeConfig:
   repo: 'basiccontainers/basiccontainer.github.io'
   editLinks: true
