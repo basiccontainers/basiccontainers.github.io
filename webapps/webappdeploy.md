@@ -5,7 +5,7 @@ In the example scenario, the team wants to host the web app in App Service. They
 
 In this section , you'll learn how you can configure App Service to deploy a web app from a repository in Container Registry.
 
-## Create and deploy a webapp 
+## Create and deploy a webapp in the portal 
 In the example scenario, you have uploaded the image for the web app to Azure Container Registry and is now ready to deploy the web app.
 - In  Azure portal home page, and under Azure services, select Create a resource. The Create a resource pane appears.
 - Search for "Web App" or on the left  select Web, and under Popular offers, select Web App.
@@ -19,6 +19,44 @@ In the example scenario, you have uploaded the image for the web app to Azure Co
 | Publish |  Docker Container | 
 | Operating System | Linux | 
 | Region |  Select the same location that is close to you from previous exercise. | 
-| App Service plan | Use the default.| 
+| App Service plan | S1. (We use S1 to make use of slots)| 
 - Select Next: Docker >.
 - On the Docker tab, enter the following values for each setting.
+
+| Setting   | value |
+| ------------- | ------------- |
+|Options|	Single Container|
+|Image Source	|Azure Container Registry|
+|Registry|	Select your registry.|
+|Image|	webimage|
+|Tag|	latest |
+|Startup Command |Leave this setting empty.|
+- Select Review and create, and then select Create. Wait until the web app has been deployed before you continue.
+- To test the app, browse to https://<app-name>.azurewebsites.net, replacing <app-name> with the name of your web app. On first access, it may take some time for the app to respond because App Service must pull the entire image from the registry. If the browser times out, just refresh the page. Once the initial image is pulled, subsequent tests will run much faster.
+
+## Create and deploy a webapp in the Cloud Shell  
+
+To deploy a container to Azure App Service, you first create a web app on App Service, then connect the web app to the container registry. When the web app starts, App Service automatically pulls the image from the registry.
+- Configure the following parameters in your cloud shell 
+```
+resourceGroup="ivanresourcegroup"
+appserviceplan="ivanappservice"
+appname="myapplicationivans" ## This should be unique
+az group create --location westeurope --name $resourceGroup
+```
+- Create an App Service plan using the az appservice plan create command:
+```
+az appservice plan create --name $appserviceplan --resource-group $resourceGroup --is-linux --sku S1
+```
+- Create the web app with the az webpp create command:
+```
+ az webapp create --resource-group $resourceGroup --plan $appserviceplan  --name $appname --deployment-container-image-name ivanacrdemo.azurecr.io/webimage:latest 
+```
+- To test the app, browse to https://<app-name>.azurewebsites.net, replacing <app-name> with the name of your web app. On first access, it may take some time for the app to respond because App Service must pull the entire image from the registry. If the browser times out, just refresh the page. Once the initial image is pulled, subsequent tests will run much faster.
+
+-  -  ![webapüp](./img/1webapp.png)
+
+resourceGroup="ivanresourcegroup"
+appserviceplan="ivanappservice"
+appname="myapplicationivans" ## This should be unique
+az group create --location westeurope --name $resourceGroup
