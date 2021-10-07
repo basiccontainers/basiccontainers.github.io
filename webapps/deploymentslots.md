@@ -26,10 +26,23 @@ Create a new staging slot
 - In the Name field, enter Staging, accept the default for Clone settings from, and then select Add.
 - After the deployment slot is successfully created, select Close.
 
-## 
+## Create a New preprod slot 
 ```
-az webapp deployment slot  create  -s preprod -n nynynynsg1 -g ivanresourcegroup
+az webapp deployment slot  create  -s preprod --name $appname -g $resourceGroup
+
 ```
+## Configure the container to use the new image 
+
+### CLI 
+```
+az webapp config container set -s preprod --docker-custom-image-name   ivanacrdemo.azurecr.io/webimage:v3 -g $resourceGroup --name $appname
+```
+
+### Portal 
+//todo show screen shot how to do this 
+
+## Get preprod URL 
+-- Fetch preprod url 
 
 
 
