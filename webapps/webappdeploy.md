@@ -21,11 +21,9 @@ In the example scenario, you have uploaded the image for the web app to Azure Co
 | Operating System | Linux | 
 | Region |  Select the same location that is close to you from previous exercise. | 
 | App Service plan | S1. (We use S1 to make use of slots). You will need to create a new service plan | 
-
+  ![webapp](./img/4webapp.png)
 - Select Next: Docker >.
 - On the Docker tab, enter the following values for each setting.
-  ![webapp](./img/4webapp.png)
-
 | Setting   | value |
 | ------------- | ------------- |
 |Options|	Single Container|
@@ -34,7 +32,7 @@ In the example scenario, you have uploaded the image for the web app to Azure Co
 |Image|	webimage|
 |Tag|	latest |
 |Startup Command |Leave this setting empty.|
-  ![webapp](./img/5webapp.png)
+- ![webapp](./img/5webapp.png)
 - Select Review and create, and then select Create. Wait until the web app has been deployed before you continue.
 - To test the app, browse to https://<app-name>.azurewebsites.net, replacing <app-name> with the name of your web app. On first access, it may take some time for the app to respond because App Service must pull the entire image from the registry. If the browser times out, just refresh the page. Once the initial image is pulled, subsequent tests will run much faster.
 
