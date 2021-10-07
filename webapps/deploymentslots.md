@@ -21,7 +21,7 @@ Create a new staging slot
 - On the Azure portal menu, or from the Home page, select All resources, filter by Type == App Service, and then select Apply.
 - Select your web app. The App Service pane appears for your web app.
 - In the left menu pane, under Deployment, select Deployment slots. The Deployment slots pane appears for your App Service
-- ![registry](./img/1slot.png)
+- ![registry](./img/1slots.png)
 - From the top menu bar, select Add Slot. The Add a slot pane appears.
 - In the Name field, enter Staging, accept the default for Clone settings from, and then select Add.
 - After the deployment slot is successfully created, select Close.
