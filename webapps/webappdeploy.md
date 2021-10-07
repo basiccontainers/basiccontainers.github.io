@@ -42,6 +42,8 @@ To deploy a container to Azure App Service, you first create a web app on App Se
 resourceGroup="ivanresourcegroup"
 appserviceplan="ivanappservice"
 appname="myapplicationivans" ## This should be unique
+appname="nynynynsg1" ## This should be unique
+
 az group create --location westeurope --name $resourceGroup
 ```
 - Create an App Service plan using the az appservice plan create command:
