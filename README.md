@@ -5,6 +5,8 @@
 - [Lab 2 - Deploy and run containers in Azure Webapps ](webapps/webappdeploy.md)
 - [Lab 3 - Perform A B testing and deployments using slots  ](webapps/deploymentslots.md)
 
+
+![webapp](./img/aks.png)
 ## AKS
  - Create AKS Cluster 
  - Deploy Appliction and expose it 
