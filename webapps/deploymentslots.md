@@ -10,14 +10,47 @@ Using separate staging and production slots has several advantages.
 For the new web app, you created only one slot: the production slot. You deployed source code to this slot.
 
 Next, you'll create a deployment slot where you can stage new versions of the web app.
+## Modify and rebuild application  for Deployment slot 
+Before we configure any slots we create the application for the slot. For this we will simply modify the landing page. For this we will rebuilt our docker image under a new tag 
 
-## (option a) Create a new Preproduction Slot with CLI 
+### Modify application and push to ACR
+
+- Navigate to the project from the [Lab 2 - Deploy and run containers in Azure Webapps ](webappdeploy.md)
+- Set variables 
 ```
-az webapp deployment slot  create  -s preprod -n nynynynsg1 -g ivanresourcegroup
+resourceGroup="ivanresourcegroup"
+## This should be unique
+appname="myapplicationivans" 
+## This should be unique
+acr="ivanacrdemo"
 ```
-## (option b)Create a new Preproduction Slot in the Portal 
+- Chnage directory to application project 
+``` 
+cd mslearn-deploy-run-container-app-service/dotnet/SampleWeb/Pages
+```
+- Create the modified index pages by overwriting the previous one 
+```
+cp Index.cshtml.new  Index.cshtml
+```
+- Navigate back to the Application root folder. this is the folder where the Dockerfile can be found(mslearn-deploy-run-container-app-service/dotnet/)  
+```
+cd ../../
+```
+- Execute the following command. This command sends the folder's contents to Container Registry, which uses the instructions in the Docker file to build the image and store it. Take care not to leave out the . character at the end of the command.
+``` 
+az acr build --registry $acr --image webimage:v2 .
+```  
+
+## Create a Preprod Slot 
+### (option a) Create a new Preproduction Slot with CLI 
+```
+## Set variables 
+resourceGroup="ivanresourcegroup"
+appname="myapplicationivans" ## This should be unique
+az webapp deployment slot  create  -s preprod --name $appname -g $resourceGroup
+```
+### (option b)Create a new Preproduction Slot in the Portal 
 Create a new staging slot
-
 - On the Azure portal menu, or from the Home page, select All resources, filter by Type == App Service, and then select Apply.
 - Select your web app. The App Service pane appears for your web app.
 - In the left menu pane, under Deployment, select Deployment slots. The Deployment slots pane appears for your App Service
@@ -26,11 +59,9 @@ Create a new staging slot
 - In the Name field, enter Staging, accept the default for Clone settings from, and then select Add.
 - After the deployment slot is successfully created, select Close.
 
-## Create a New preprod slot 
-```
-az webapp deployment slot  create  -s preprod --name $appname -g $resourceGroup
+### View Slot 
 
-```
+
 ## Configure the container to use the new image 
 
 ### CLI
@@ -45,7 +76,14 @@ az webapp config container set -s preprod --docker-custom-image-name $acrname.az
 ## Get preprod URL 
 -- Fetch preprod url 
 
+## Canary routing 
+ By default, all client requests to the app's production URL (http://<app_name>.azurewebsites.net) are routed to the production slot. You can route a portion of the traffic to another slot.  This feature is often know as canary deployment is useful if you need user feedback for a new update, but you're not ready to release it to production.
 
+ To route production traffic automatically:
+
+- Go to your app's resource page and select Deployment slots.
+
+- In the Traffic % column of the slot you want to route to, specify a percentage (between 0 and 100) to represent the amount of total traffic you want to route. Select Save.
 
 ## Reference 
   

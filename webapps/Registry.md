@@ -14,7 +14,7 @@ az group create --location westeurope --name $resourceGroup
 az acr create --name $acr --resource-group $resourceGroup --sku standard --admin-enabled true
 ```
 
-## Create  ARC in portal 
+## Create  ACR in portal 
  - Sign in to the Azure portal with your Azure subscription.
  - On the Azure portal home page, under Azure services, select Create a resource. The Create a resource pane appears.
  - In the left menu pane, select Containers, and under Popular products, select Container Registry.
@@ -40,7 +40,7 @@ cd mslearn-deploy-run-container-app-service/dotnet
 ```
 - Execute the following command. This command sends the folder's contents to Container Registry, which uses the instructions in the Docker file to build the image and store it. Take care not to leave out the . character at the end of the command.
 ``` 
-az acr build --registry $acr --image webimage .
+az acr build --registry $acr --image webimage:v1 .
 ``` 
 ## Examine the container registry
 - Return to the Azure portal, and on the Overview page for your container registry, select Go to resource. Your Container registry pane appears.
