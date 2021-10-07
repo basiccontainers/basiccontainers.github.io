@@ -46,11 +46,11 @@ appname="nynynynsg1" ## This should be unique
 
 az group create --location westeurope --name $resourceGroup
 ```
-- Create an App Service plan using the az appservice plan create command:
+- Create an App Service plan using the az appservice plan create command: Creates an App Service plan
 ```
 az appservice plan create --name $appserviceplan --resource-group $resourceGroup --is-linux --sku S1
 ```
-- Create the web app with the az webpp create command:
+- Create the web app with the az webpp create command: 	Creates an App Service app.
 ```
  az webapp create --resource-group $resourceGroup --plan $appserviceplan  --name $appname --deployment-container-image-name ivanacrdemo.azurecr.io/webimage:latest 
 ```

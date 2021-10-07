@@ -33,9 +33,10 @@ az webapp deployment slot  create  -s preprod --name $appname -g $resourceGroup
 ```
 ## Configure the container to use the new image 
 
-### CLI 
+### CLI
+The following commans sets the Docker container for the App Service app.
 ```
-az webapp config container set -s preprod --docker-custom-image-name   ivanacrdemo.azurecr.io/webimage:v3 -g $resourceGroup --name $appname
+az webapp config container set -s preprod --docker-custom-image-name $acrname.azurecr.io/webimage:v3 -g $resourceGroup --name $appname  --docker-registry-server-url  https://$acrname.azurecr.io
 ```
 
 ### Portal 
@@ -44,6 +45,12 @@ az webapp config container set -s preprod --docker-custom-image-name   ivanacrde
 ## Get preprod URL 
 -- Fetch preprod url 
 
+
+
+## Reference 
+  
+ -  Staging : https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-deploy-staging-environment?toc=/cli/azure/toc.json
+ -  Setting image_: https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-linux-docker-aspnetcore?toc=/cli/azure/toc.json
 
 
 
