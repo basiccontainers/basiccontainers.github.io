@@ -8,7 +8,7 @@ In this lab you will:
  - A AppService redeployment is triggered on successful build 
 
 A github actions workflow is defined by a YAML (.yml) file in the ``/.github/workflows/`` path in your repository. This definition contains the various steps and parameters that are in the workflow. These configurations and setup can be manually setup per project. This involves secret configuration and service principal setup. In this lab we are going to use App Services Deployment center to automate all these tasks with a few clicks  
-
+![webapp](./img/githubactions-deploy.png)
 ## Setup 
 
 ### Fork repo. 
@@ -32,17 +32,17 @@ First step is to fork the original repo. The actions workflow will be deployed t
 - Once signed into Github account  select the organisation, repository and branch the continous deployment should be based upon 
 - ![webapp](./img/selectrepo.png)
 -  you are prompt to select the Azure Container registry and the name the image will be pushed under 
--  [webapp](./img/selectRegistry.png)
+-  ![webapp](./img/selectRegistry.png)
 -  Leave the Startup file emptry 
 - You can view the generate Github workflow by clicking "Preview File"
-- [webapp](./img/workflowpreview.png)
+- ![webapp](./img/workflowpreview.png)
 - Click  Save: will setup the workflow in the github repo. 
 
 ## Modify the default Work flow to point to a docker file.
-The default workflow expects a Dockerfile under the root directory. In the repository there is no dockerfile under root and the result is the initial build will fail. To fix this we need to modify the workflow. 
+The default workflow expects a Dockerfile under the root directory. In the repository there is no dockerfile under root and this result is the initial build will fail. To fix this we need to modify the workflow. 
  - Edit the workflow file directly in the browser. 
  - Browse to the project github repository under ``mslearn-deploy-run-container-app-service/.github/workflows`` and click ``Edit`
-- [webapp](./img/modifyAction.png) 
+- ![webapp](./img/modifyAction.png) 
 
  - Fine the Action  ``Build and push container image to registry`` (line:29) Befor change
  ```
@@ -66,9 +66,9 @@ The default workflow expects a Dockerfile under the root directory. In the repos
 
 ```
  - The action should now look like this
- - [webapp](./img/commitWorkflow.png) 
+ - ![webapp](./img/commitWorkflow.png) 
  -  To view if the build  succesful. In github under the project navigate to Actions and the the build, push and deployment should be succesful   
- - [webapp](./img/resultofworkflow.png) 
+ - ![webapp](./img/resultofworkflow.png) 
 
 ## Trigger a build 
 Now we want to see if you our build pipeline really results in our application been redeployed and updated 
@@ -79,7 +79,7 @@ Now we want to see if you our build pipeline really results in our application b
 
 
 
-![webapp](./img/githubactions-deploy.png)
+
 ## Reference 
 - Patterns container : https://docs.microsoft.com/en-us/azure/app-service/deploy-best-practices#continuously-deploy-containers 
 - Github Actions: https://docs.microsoft.com/en-us/azure/app-service/deploy-best-practices#use-github-actions
