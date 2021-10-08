@@ -8,8 +8,10 @@
 
 ![webapp](./img/aks.png)
 ## AKS
- - Create AKS Cluster 
- - Deploy Appliction and expose it 
+ -  [Lab 4 -  Create and Access AKS  ](aks/akscreate.md)
+ -  [Lab 4 -  Deploy application  ](aks/akscreate.md) 
  - Enable monitoring 
+ - Perform upgrade to latest version 
+
 
 - [Lab 2 - AKS ](aks/README.md)
