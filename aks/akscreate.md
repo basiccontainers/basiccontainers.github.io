@@ -222,10 +222,11 @@ AAD role propagation done[############################################]  100.000
 } 
 ```
  - The above output shows the cluster is up and running 
-## Browse AKS Rsources  
+## Browse AKS Resources  
 The az aks create command created a second resource group named MC_adc-aks-rg_adc-cluster_westeurope containing all resources provisioned for our AKS cluster: The resources are implementation detail behind the cluster. The resources created under this resource groups should not be tocuhed and instead these will be managed by the AKS service. 
-
+![webapp](./img/aksworkloads.png)
 To view various details an status of the AKS cluster you can navigate to the cluster resource by either searching for AKS in the search bar or navigating to the resource group 
+
 - Navigate to AKS resouce in the portal. 
 - To view deployment details navigate workloads. Here you can see the various containers and deployments which are currently running in AKS. Additonaly namespaces, pods and configurations can be viewed here 
 ![webapp](./img/aksworkloads.png)

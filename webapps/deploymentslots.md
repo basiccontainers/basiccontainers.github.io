@@ -9,7 +9,8 @@ Using separate staging and production slots has several advantages.
 
 For the new web app, you created only one slot: the production slot. You deployed source code to this slot.
 
-Next, you'll create a deployment slot where you can stage new versions of the web app.
+Next, you'll create a deployment slot where you can stage new versions of the web app. Whenever possible, use deployment slots when deploying a new production build. When using a Standard App Service Plan tier or better, you can deploy your app to a staging environment, validate your changes, and do smoke tests. When you are ready, you can swap your staging and production slots. The swap operation warms up the necessary worker instances to match your production scale, thus eliminating downtime.
+
 ## Modify and rebuild application  for Deployment slot 
 Before we configure any slots we create the application for the slot. For this we will simply modify the landing page. For this we will rebuilt our docker image under a new tag 
 
