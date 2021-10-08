@@ -72,11 +72,12 @@ The default workflow expects a Dockerfile under the root directory. In the repos
  ![webapp](./img/resultofbuild.png) 
 
 ## Trigger a build 
-Now we want to see if you our build pipeline really results in our application been redeployed and updated 
+Now we want to see if our build pipeline really results in our application been redeployed and updated 
 - In the project repo.  Modify the html file ``mslearn-deploy-run-container-app-service/dotnet/SampleWeb/Pages/Index.cshtml``. For the sake of simplicity perform these changes in the github UI
-- Simply change the text in   ``  <h1 class="display-4">Welcome</h1> `` to something else 
+- Simply change the text in   ``  <h1 class="display-4">Welcome</h1> `` to something else. 
 - Update file by committing and push change in the github UI. 
 - Once the workflow is complete open the application URL(can be found in the AppService overview in the portal)
+- Confirm changes have been deployed 
 
 
 
