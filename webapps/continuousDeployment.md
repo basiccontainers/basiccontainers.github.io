@@ -67,12 +67,17 @@ The default workflow expects a Dockerfile under the root directory. In the repos
 ```
  - The action should now look like this
  - [webapp](./img/commitWorkflow.png) 
+ -  To view if the build  succesful. In github under the project navigate to Actions and the the build, push and deployment should be succesful   
+ - [webapp](./img/resultofworkflow.png) 
+
+## Trigger a build 
+Now we want to see if you our build pipeline really results in our application been redeployed and updated 
+- In the project repo.  Modify the html file ``mslearn-deploy-run-container-app-service/dotnet/SampleWeb/Pages/Index.cshtml``. For the sake of simplicity perform these changes in the github UI
+- Simply change the text in   ``  <h1 class="display-4">Welcome</h1> `` to something else 
+- Update file by committing and push change in the github UI. 
+- Once the workflow is complete open the application URL(can be found in the AppService overview in the portal)
 
 
-
-A workflow is defined by a YAML (.yml) file in the /.github/workflows/ path in your repository. This definition contains the various steps and parameters that are in the workflow.
-
-For an Azure App Service container workflow, the file has three sections:
 
 ![webapp](./img/githubactions-deploy.png)
 ## Reference 
