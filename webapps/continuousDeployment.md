@@ -26,23 +26,23 @@ First step is to fork the original repo. The actions workflow will be deployed t
 - Select the App service and navigate to the ``Deployment Center``
 - Select ``Github Actions Build``
 - Sign into your github in the 'Github Actions' Section
-- ![webapp](./img/setupDeployment.png)
+![webapp](./img/setupDeployment.png)
 - You will be prompted to sign into github 
--  ![webapp](./img/signintogithub.png)
+![webapp](./img/signintogithub.png)
 - Once signed into Github account  select the organisation, repository and branch the continous deployment should be based upon 
-- ![webapp](./img/selectrepo.png)
+![webapp](./img/selectrepo.png)
 -  you are prompt to select the Azure Container registry and the name the image will be pushed under 
--  ![webapp](./img/selectRegistry.png)
+![webapp](./img/selectRegistry.png)
 -  Leave the Startup file emptry 
 - You can view the generate Github workflow by clicking "Preview File"
-- ![webapp](./img/workflowpreview.png)
+![webapp](./img/workflowpreview.png)
 - Click  Save: will setup the workflow in the github repo. 
 
 ## Modify the default Work flow to point to a docker file.
 The default workflow expects a Dockerfile under the root directory. In the repository there is no dockerfile under root and this result is the initial build will fail. To fix this we need to modify the workflow. 
  - Edit the workflow file directly in the browser. 
  - Browse to the project github repository under ``mslearn-deploy-run-container-app-service/.github/workflows`` and click ``Edit`
-- ![webapp](./img/modifyAction.png) 
+![webapp](./img/modifyAction.png) 
 
  - Fine the Action  ``Build and push container image to registry`` (line:29) Befor change
  ```
@@ -66,9 +66,9 @@ The default workflow expects a Dockerfile under the root directory. In the repos
 
 ```
  - The action should now look like this
- - ![webapp](./img/commitWorkflow.png) 
+ ![webapp](./img/commitWorkflow.png) 
  -  To view if the build  succesful. In github under the project navigate to Actions and the the build, push and deployment should be succesful   
- - ![webapp](./img/resultofbuild.png) 
+ ![webapp](./img/resultofbuild.png) 
 
 ## Trigger a build 
 Now we want to see if you our build pipeline really results in our application been redeployed and updated 
