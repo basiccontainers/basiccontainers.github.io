@@ -68,7 +68,7 @@ The default workflow expects a Dockerfile under the root directory. In the repos
  - The action should now look like this
  - ![webapp](./img/commitWorkflow.png) 
  -  To view if the build  succesful. In github under the project navigate to Actions and the the build, push and deployment should be succesful   
- - ![webapp](./img/resultofworkflow.png) 
+ - ![webapp](./img/resultofbuild.png) 
 
 ## Trigger a build 
 Now we want to see if you our build pipeline really results in our application been redeployed and updated 
