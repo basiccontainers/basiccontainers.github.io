@@ -15,10 +15,11 @@ A github actions workflow is defined by a YAML (.yml) file in the ``/.github/wor
 First step is to fork the original repo. The actions workflow will be deployed to this new repo 
  - Go to ``https://github.com/MicrosoftDocs/mslearn-deploy-run-container-app-service``
  - Click for repo in the top right hand corner 
- - ![webapp](./img/forkrepo.png)
- - Clicking for should show a forking status 
- - ![webapp](./img/FORKING.png)
+ ![webapp](./img/forkrepo.png)
+ - Clicking should show a forking status 
+ ![webapp](./img/FORKING.png)
 
+Next step is to configure our webapp to perform continuous deployment based on our forked repo
  
 ## Configure github continuous deployment 
  Once the fork is complete we are now going to link Azrue App services to Github. This will configure a github workflow to build and deploy to Azure Webapps 
@@ -44,7 +45,7 @@ The default workflow expects a Dockerfile under the root directory. In the repos
  - Browse to the project github repository under ``mslearn-deploy-run-container-app-service/.github/workflows`` and click ``Edit`
 ![webapp](./img/modifyAction.png) 
 
- - Fine the Action  ``Build and push container image to registry`` (line:29) Befor change
+ - Fine the Action  ``Build and push container image to registry`` (line:29) Before change
  ```
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
@@ -54,8 +55,8 @@ The default workflow expects a Dockerfile under the root directory. In the repos
         file: ./Dockerfile
 ```
  - Modify the action entry by adding a parameter/value ``context: dotnet``
- - Remove the entry ``file: ./Dockerfile``
- - The action should now look like this  
+ - Remove the entry ``file: ./Dockerfile``. this is not needed as it will default to looking for a dockerfile under the ``context`` directory
+ - The action should now look like this.  
 ```
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
@@ -65,9 +66,9 @@ The default workflow expects a Dockerfile under the root directory. In the repos
         tags: ivanacrdemo.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_7952d75685264c64bf830e10954dbd0d }}/webimage:${{ github.sha }}
 
 ```
- - The action should now look like this
+ - Commit changes in the portal
  ![webapp](./img/commitWorkflow.png) 
- -  To view if the build  succesful. In github under the project navigate to Actions and the the build, push and deployment should be succesful   
+ -  To view if the build is succesful. In github under the project navigate to Actions and the the build, push and deployment should be succesful   
  ![webapp](./img/resultofbuild.png) 
 
 ## Trigger a build 
@@ -78,6 +79,9 @@ Now we want to see if you our build pipeline really results in our application b
 - Once the workflow is complete open the application URL(can be found in the AppService overview in the portal)
 
 
+
+## Conculsion 
+We were able to configure a continuous build and deployment pipeline via Azure Webapps default wizard  
 
 
 ## Reference 
