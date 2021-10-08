@@ -17,7 +17,7 @@ First step is to fork the original repo. The actions workflow will be deployed t
  - Click for repo in the top right hand corner 
  - ![webapp](./img/forkrepo.png)
  - Clicking for should show a forking status 
- - ![webapp](./img/forking.png)
+ - ![webapp](./img/FORKING.png)
 
  
 ## Configure github continuous deployment 
