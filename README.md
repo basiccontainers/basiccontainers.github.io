@@ -5,7 +5,7 @@
 - [Lab 2 - Deploy and run containers in Azure Webapps ](webapps/webappdeploy.md)
 - [Lab 3 - Perform A B testing and deployments using slots  ](webapps/deploymentslots.md)
 - [Lab 4 - Continious Build and Deployment with Github Actions    ](webapps/continuousDeployment.md)
-
+- [Lab 5 - Build and Deploy a Java application     ](webapps/javaapplication.md)
 
 ![webapp](./img/aks.png)
 ## AKS
