@@ -4,7 +4,7 @@ You can deploy a web app to Azure App Service directly from Azure Container Regi
 In the example scenario, the team wants to host the web app in App Service. They need to configure App Service to retrieve the image for the web app from the repository in Container Registry.
 
 In this section , you'll learn how you can configure App Service to deploy a web app from a repository in Container Registry.
-
+ ![lab1](./img/lab2overview.png)
 ## (Option 1) Create and deploy a webapp in the portal 
 In the example scenario, you have uploaded the image for the web app to Azure Container Registry and is now ready to deploy the web app.
 - In  Azure portal home page, and under Azure services, select Create a resource. The Create a resource pane appears.
