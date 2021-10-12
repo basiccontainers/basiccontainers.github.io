@@ -81,7 +81,26 @@ Another approach to test is simply deploying the .jar file. https://docs.microso
 az webapp deploy --resource-group spring-boot-complete-1634050788447-rg --name spring-boot-complete-1634050788447  --src-path  spring-boot-complete-0.0.1-SNAPSHOT.jar --type jar
 ```
 
-## 4 Extra: Set up continuous deployment for java 
+## 5 Bonus challenge : Enable application insights and monitoring 
+In this lab you should enable application tracing and monitoring with AppInisghts. 
+ - Go to the java based app service 
+ - Select application insights from the app services menu
+ - Select enable
+      ![registry](./img/applicationInsights.png)
+ - Ensure the workspace location is in the same region as the AppService (westeurope)
+ - Apply the following instrumentation configuration 
+    * https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-standalone-config#an-example
+    * Ensure a Role.name is configured in the config
+    * remove the connectionString and any preview features from the config (the portal will warn you)
+      ![registry](./img/instrumentconfig.png)
+ - Once onboarded generated some traffic on the application
+ - Navigate to application insights once the configuration is applied and explore the data collected. (start from application app)
+ ![insights](./img/applicationInsights_nav.png)
+
+https://azure.microsoft.com/de-de/updates/public-preview-easily-onboard-application-insights-for-java-apps-on-azure-app-services/
+
+https://azure.microsoft.com/de-de/updates/public-preview-easily-onboard-application-insights-for-java-apps-on-azure-app-services/
+## 6 Bonus: Set up continuous deployment for java 
 Simialr to previous lab  we can configure Continous deployment via the "deploymen center" 
 https://docs.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github
 

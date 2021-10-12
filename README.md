@@ -6,7 +6,7 @@
 - [Lab 3 - Perform A B testing and deployments using slots  ](webapps/deploymentslots.md)
 - [Lab 4 - Continious Build and Deployment with Github Actions    ](webapps/continuousDeployment.md)
 - [Lab 5 - Build and Deploy a Java application     ](webapps/javaap.md)
-
+- [Lab 6 ] - Functions 
 ![webapp](./img/aks.png)
 ## AKS
  -  [Lab 6 -  Create and Access AKS  ](aks/akscreate.md)
