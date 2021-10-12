@@ -82,4 +82,5 @@ In this lab we succesfully deployed our custom application and exposed it public
 
 ## References 
  - https://kubernetes.io/docs/concepts/services-networking/service/
- https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
+  - https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
+  -  https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/
