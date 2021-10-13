@@ -56,7 +56,8 @@ The default workflow expects a Dockerfile under the root directory. In the repos
 ```
  - Modify the action entry by adding a parameter/value ``context: dotnet``
  - Remove the entry ``file: ./Dockerfile``. this is not needed as it will default to looking for a dockerfile under the ``context`` directory
- - The action should now look like this.  
+ - The action should now look like this. 
+ - Important: Only replace the 'file' with the 'context' line. Do not copy the secrets for the 'tags' line. Your secrets will be different and this will break the build. 
 ```
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
