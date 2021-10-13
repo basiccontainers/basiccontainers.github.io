@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Deploy java application to | Basic Containers </title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Collection of resources for developers to get started on Azure">
+    
+    <link rel="preload" href="/assets/css/0.styles.6514b516.css" as="style"><link rel="preload" href="/assets/js/app.118d21cd.js" as="script"><link rel="preload" href="/assets/js/2.33b91e66.js" as="script"><link rel="preload" href="/assets/js/6.4eddf5af.js" as="script"><link rel="prefetch" href="/assets/js/10.05c7de4b.js"><link rel="prefetch" href="/assets/js/11.8c5be6a9.js"><link rel="prefetch" href="/assets/js/12.87630292.js"><link rel="prefetch" href="/assets/js/13.88fe2e1e.js"><link rel="prefetch" href="/assets/js/14.17bd1cef.js"><link rel="prefetch" href="/assets/js/15.a78fd5a8.js"><link rel="prefetch" href="/assets/js/16.42e82f68.js"><link rel="prefetch" href="/assets/js/17.59bb41fd.js"><link rel="prefetch" href="/assets/js/3.040216d4.js"><link rel="prefetch" href="/assets/js/4.15d706e6.js"><link rel="prefetch" href="/assets/js/5.f337493f.js"><link rel="prefetch" href="/assets/js/7.5494837b.js"><link rel="prefetch" href="/assets/js/8.45c9161c.js"><link rel="prefetch" href="/assets/js/9.e59b2424.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.6514b516.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Basic Containers </span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="deploy-java-application-to"><a href="#deploy-java-application-to" class="header-anchor">#</a> Deploy java application to</h1> <p>Azure App Service provides a highly scalable, self-patching web hosting service. This lab shows how to use the Azure CLI with the Azure Web App Plugin for Maven to deploy a .jar file, or .war file. Use the tabs to switch between Java SE and Tomcat instructions.</p> <h2 id="_1-clone-project"><a href="#_1-clone-project" class="header-anchor">#</a> 1 Clone project</h2> <p>Clone the Spring Boot Getting Started sample project.</p> <div class="language- extra-class"><pre class="language-text"><code>git clone https://github.com/spring-guides/gs-spring-boot
+</code></pre></div><h2 id="_2-prepare-maven-project"><a href="#_2-prepare-maven-project" class="header-anchor">#</a> 2 Prepare maven project</h2> <p>Run the Maven command below to configure the deployment. This command will help you to set up the App Service operating system, Java version, and Tomcat version.</p> <ul><li>first navigate to the project folder</li></ul> <div class="language- extra-class"><pre class="language-text"><code>cd gs-spring-boot/complete
+</code></pre></div><ul><li>Execute the following command. This will start a wizard to configure the maven plugin automatically.</li></ul> <div class="language- extra-class"><pre class="language-text"><code>mvn com.microsoft.azure:azure-webapp-maven-plugin:2.2.0:config
+</code></pre></div><ul><li>When prompted with Subscription option, select the proper Subscription by entering the number printed at the line start.</li> <li>When prompted with Web App option, select the default option, <create>, by pressing enter.</create></li> <li>When prompted with OS option, select Linux by pressing enter.</li> <li>When prompted with javaVersion option, select Java 8 by entering 1.</li> <li>When prompted with Pricing Tier option, select P1v2 by entering 9.</li> <li>Finally, press enter on the last prompt to confirm your selections.</li> <li>You can modify the pom file directly by modifying the following properties in that are injected into the pom file</li></ul> <table><thead><tr><th>Property</th> <th>Required</th> <th>Description</th> <th>Version</th></tr></thead> <tbody><tr><td>schemaVersion</td> <td>false</td> <td>Specify the version of the configuration schema. Supported values are: v1, v2.</td> <td>1.5.2</td></tr> <tr><td>subscriptionId</td> <td>false</td> <td>Specify the subscription ID.</td> <td>0.1.0+</td></tr> <tr><td>resourceGroup</td> <td>true</td> <td>Azure Resource Group for your Web App.</td> <td>0.1.0+</td></tr> <tr><td>appName</td> <td>true</td> <td>The name of your Web App.</td> <td>0.1.0+</td></tr> <tr><td>region</td> <td>false</td> <td>Specifies the region where your Web App will be hosted; the default value is centralus. All valid regions at Supported Regions section.</td> <td>0.1.0+</td></tr> <tr><td>pricingTier</td> <td>false</td> <td>The pricing tier for your Web App. The default value is P1v2 for production workload, while B2 is the recommended minimum for Java dev/test. Learn more</td> <td>0.1.0+</td></tr> <tr><td>runtime</td> <td>false</td> <td>The runtime environment configuration, you could see the detail here.</td> <td>0.1.0+</td></tr> <tr><td>deployment</td> <td>false</td> <td>The deployment configuration, you could see the details here.</td> <td>0.1.0+</td></tr> <tr><td>You can modify the configurations for App Service directly in your pom.xml if needed. Some common ones are listed below:</td> <td></td> <td></td> <td></td></tr></tbody></table> <h3 id="inspect-pom-xml"><a href="#inspect-pom-xml" class="header-anchor">#</a> Inspect pom.xml</h3> <p>To view the changes the maven plugin made. Open the pom.xml under gs-spring-boot/complete/pom-xml  <code>code pom.xml</code>. and under the build section</p> <div class="language- extra-class"><pre class="language-text"><code>      &lt;plugin&gt;
+        &lt;groupId&gt;com.microsoft.azure&lt;/groupId&gt;
+        &lt;artifactId&gt;azure-webapp-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.2.0&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;schemaVersion&gt;v2&lt;/schemaVersion&gt;
+          &lt;subscriptionId&gt;yxxxxxx&lt;/subscriptionId&gt;
+          &lt;resourceGroup&gt;spring-boot-complete-xxxx-rg&lt;/resourceGroup&gt;
+          &lt;appName&gt;spring-boot-complete-xxxxx&lt;/appName&gt;
+          &lt;pricingTier&gt;P1v2&lt;/pricingTier&gt;
+          &lt;region&gt;centralus&lt;/region&gt;
+          &lt;runtime&gt;
+            &lt;os&gt;Linux&lt;/os&gt;
+            &lt;javaVersion&gt;Java 8&lt;/javaVersion&gt;
+            &lt;webContainer&gt;Java SE&lt;/webContainer&gt;
+          &lt;/runtime&gt;
+          &lt;deployment&gt;
+            &lt;resources&gt;
+              &lt;resource&gt;
+                &lt;directory&gt;${project.basedir}/target&lt;/directory&gt;
+                &lt;includes&gt;
+                  &lt;include&gt;*.jar&lt;/include&gt;
+                &lt;/includes&gt;
+              &lt;/resource&gt;
+            &lt;/resources&gt;
+          &lt;/deployment&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+</code></pre></div><h2 id="_3-deploy-java-to-cloud"><a href="#_3-deploy-java-to-cloud" class="header-anchor">#</a> 3 Deploy java to cloud</h2> <p>With all the configuration ready in your pom file, you can deploy your Java app to Azure with one single command.</p> <div class="language- extra-class"><pre class="language-text"><code>mvn package azure-webapp:deploy
+</code></pre></div><p>Navigate to the azure portal and open the open the application url to verify the deployment was successful.</p> <h3 id="deploy-application-with-zip-deploy"><a href="#deploy-application-with-zip-deploy" class="header-anchor">#</a> Deploy application with zip deploy</h3> <p>Another approach to test is simply deploying the .jar file. https://docs.microsoft.com/en-us/azure/app-service/deploy-zip?tabs=cli#deploy-a-zip-package</p> <div class="language- extra-class"><pre class="language-text"><code>az webapp deploy --resource-group spring-boot-complete-1634050788447-rg --name spring-boot-complete-1634050788447  --src-path  spring-boot-complete-0.0.1-SNAPSHOT.jar --type jar
+</code></pre></div><h2 id="_5-bonus-challenge-enable-application-insights-and-monitoring"><a href="#_5-bonus-challenge-enable-application-insights-and-monitoring" class="header-anchor">#</a> 5 Bonus challenge : Enable application insights and monitoring</h2> <p>In this lab you should enable application tracing and monitoring with AppInisghts.</p> <ul><li>Go to the java based app service</li> <li>Select application insights from the app services menu</li> <li>Select enable
+<img src="/assets/img/applicationInsights.f72f63c1.png" alt="registry"></li> <li>Ensure the workspace location is in the same region as the AppService (westeurope)</li> <li>Apply the following instrumentation configuration
+<ul><li>https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-standalone-config#an-example</li> <li>Ensure a Role.name is configured in the config</li> <li>remove the connectionString and any preview features from the config (the portal will warn you)
+<img src="/assets/img/instrumentconfig.3bcc21ac.png" alt="registry"></li></ul></li> <li>Once onboarded generated some traffic on the application</li> <li>Navigate to application insights once the configuration is applied and explore the data collected. (start from application app)
+<img src="/assets/img/applicationInsights_nav.252b63ed.png" alt="insights"></li></ul> <p>https://azure.microsoft.com/de-de/updates/public-preview-easily-onboard-application-insights-for-java-apps-on-azure-app-services/</p> <p>https://azure.microsoft.com/de-de/updates/public-preview-easily-onboard-application-insights-for-java-apps-on-azure-app-services/</p> <h2 id="_6-bonus-set-up-continuous-deployment-for-java"><a href="#_6-bonus-set-up-continuous-deployment-for-java" class="header-anchor">#</a> 6 Bonus: Set up continuous deployment for java</h2> <p>Simialr to previous lab  we can configure Continous deployment via the &quot;deploymen center&quot;
+https://docs.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github</p> <p>Hints</p> <ul><li>in github fork the repo</li> <li>Go to &quot;deployment center&quot; and configure your github as source repo
+<img src="/assets/img/javaappdeployment.0582227c.png" alt="registry"></li> <li>you may need to make changes to the generate to work flow file .yaml file to ensure
+<ul><li>the mvn package script is executed in the correct folder</li> <li>the .jar artifact is copyed to the next stage</li></ul></li></ul> <div class="language- extra-class"><pre class="language-text"><code>
+      - name: Build with Maven
+        run: mvn clean install
+        working-directory: '${{ github.workspace }}/complete'
+      
+    
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/complete/target/*.jar'
+</code></pre></div><p>https://docs.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github</p></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.118d21cd.js" defer></script><script src="/assets/js/2.33b91e66.js" defer></script><script src="/assets/js/6.4eddf5af.js" defer></script>
+  </body>
+</html>

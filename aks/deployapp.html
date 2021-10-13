@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Deploy cusotmer container from ACR to Kubernetes | Basic Containers </title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Collection of resources for developers to get started on Azure">
+    
+    <link rel="preload" href="/assets/css/0.styles.6514b516.css" as="style"><link rel="preload" href="/assets/js/app.118d21cd.js" as="script"><link rel="preload" href="/assets/js/2.33b91e66.js" as="script"><link rel="preload" href="/assets/js/15.a78fd5a8.js" as="script"><link rel="prefetch" href="/assets/js/10.05c7de4b.js"><link rel="prefetch" href="/assets/js/11.8c5be6a9.js"><link rel="prefetch" href="/assets/js/12.87630292.js"><link rel="prefetch" href="/assets/js/13.88fe2e1e.js"><link rel="prefetch" href="/assets/js/14.17bd1cef.js"><link rel="prefetch" href="/assets/js/16.42e82f68.js"><link rel="prefetch" href="/assets/js/17.59bb41fd.js"><link rel="prefetch" href="/assets/js/3.040216d4.js"><link rel="prefetch" href="/assets/js/4.15d706e6.js"><link rel="prefetch" href="/assets/js/5.f337493f.js"><link rel="prefetch" href="/assets/js/6.4eddf5af.js"><link rel="prefetch" href="/assets/js/7.5494837b.js"><link rel="prefetch" href="/assets/js/8.45c9161c.js"><link rel="prefetch" href="/assets/js/9.e59b2424.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.6514b516.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Basic Containers </span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="deploy-cusotmer-container-from-acr-to-kubernetes"><a href="#deploy-cusotmer-container-from-acr-to-kubernetes" class="header-anchor">#</a> Deploy cusotmer container from ACR to Kubernetes</h1> <p>In this lab you will deploy a custom container from ACR into AKS. In this scenario.</p> <h2 id="deploy-application"><a href="#deploy-application" class="header-anchor">#</a> Deploy application</h2> <p>To pull down credentials execute the following command</p> <div class="language- extra-class"><pre class="language-text"><code>az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER
+</code></pre></div><h3 id="create-an-application-in-kubernetes"><a href="#create-an-application-in-kubernetes" class="header-anchor">#</a> Create an application in kubernetes</h3> <p>The easiest way to deploy and application in kubernetes is to use the helper command &quot;create&quot;. This command will generate a kubernetes manifest file and push the configuration to kubernetes api. https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/</p> <div class="language- extra-class"><pre class="language-text"><code>kubectl  create deployment myapp --image  $registry.azurecr.io/webimage:v2
+</code></pre></div><p>Verify deployment running by calling <code>kubectl get po</code></p> <p><code>ivan@Azure:~$ kubectl get po NAME READY STATUS RESTARTS AGE myapp-84c499bdff-2xzw7 1/1 Running 0 10s</code>
+Alternatively another way to deploy is to fist generate the manifest file and then modify locally</p> <div class="language- extra-class"><pre class="language-text"><code>ivan@Azure:~$ kubectl  create deployment myapp --image  ivanacrdemo.azurecr.io/webimage:v2 --dry-run=client -o yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: myapp
+  name: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - image: ivanacrdemo.azurecr.io/webimage:v2
+        name: webimage
+        resources: {}
+status: {}
+ivan@Azure:~$
+</code></pre></div><p>The output can then be modified (changing names, adding labels ) and then pushed to kubernetes using the apply command <code>kubectl apply -f deployment.yaml</code></p> <h2 id="expose-application"><a href="#expose-application" class="header-anchor">#</a> Expose application</h2> <p>Now that our application is running in kubernetes we want to make it accessible and consumable from outside the cluster.</p> <ul><li>Execute the following command to expose the application on a Azure public loadbalancer</li></ul> <div class="language- extra-class"><pre class="language-text"><code>kubectl  expose deployment myapp --type=LoadBalancer --port 80
+</code></pre></div><ul><li>The application will be available of a public Ip. To disocver the ip execute the <code>kubectl get svc</code> command. The app is now available under external IP</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ivan@Azure:~$ kubectl get svc
+NAME         TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)        AGE
+kubernetes   ClusterIP      10.0.0.1      &lt;none&gt;         443/TCP        4d3h
+myapp        LoadBalancer   10.0.24.225   20.82.81.137   80:30924/TCP   7m32s
+ivan@Azure:~
+</code></pre></div><h2 id="extra-expose-the-application-on-a-ingress-controller"><a href="#extra-expose-the-application-on-a-ingress-controller" class="header-anchor">#</a> Extra: Expose the application on a ingress controller</h2> <p>kubernetes as the concept of a exposing all ingress traffic within a central location. Instead of all applications exposing public ips instead applications are exposed on a single ingress ip and then routed to the back end application. In this extra task try deploy you application on an ingress controller</p> <h3 id="hints"><a href="#hints" class="header-anchor">#</a> Hints</h3> <ul><li>Deploy a ingress controller (nginx)</li> <li>Create a Ingress manifest for your app</li> <li>Deploy application under a unique path (routing rule)</li></ul> <p>See</p> <ul><li>https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/</li> <li>https://kubernetes.io/docs/concepts/services-networking/ingress/</li></ul> <h2 id="summary"><a href="#summary" class="header-anchor">#</a> Summary</h2> <p>In this lab we succesfully deployed our custom application and exposed it publically</p> <h2 id="references"><a href="#references" class="header-anchor">#</a> References</h2> <ul><li>https://kubernetes.io/docs/concepts/services-networking/service/</li> <li>https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/</li> <li>https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/</li></ul></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.118d21cd.js" defer></script><script src="/assets/js/2.33b91e66.js" defer></script><script src="/assets/js/15.a78fd5a8.js" defer></script>
+  </body>
+</html>

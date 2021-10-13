@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Create and Access AKS | Basic Containers </title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Collection of resources for developers to get started on Azure">
+    
+    <link rel="preload" href="/assets/css/0.styles.6514b516.css" as="style"><link rel="preload" href="/assets/js/app.118d21cd.js" as="script"><link rel="preload" href="/assets/js/2.33b91e66.js" as="script"><link rel="preload" href="/assets/js/12.87630292.js" as="script"><link rel="prefetch" href="/assets/js/10.05c7de4b.js"><link rel="prefetch" href="/assets/js/11.8c5be6a9.js"><link rel="prefetch" href="/assets/js/13.88fe2e1e.js"><link rel="prefetch" href="/assets/js/14.17bd1cef.js"><link rel="prefetch" href="/assets/js/15.a78fd5a8.js"><link rel="prefetch" href="/assets/js/16.42e82f68.js"><link rel="prefetch" href="/assets/js/17.59bb41fd.js"><link rel="prefetch" href="/assets/js/3.040216d4.js"><link rel="prefetch" href="/assets/js/4.15d706e6.js"><link rel="prefetch" href="/assets/js/5.f337493f.js"><link rel="prefetch" href="/assets/js/6.4eddf5af.js"><link rel="prefetch" href="/assets/js/7.5494837b.js"><link rel="prefetch" href="/assets/js/8.45c9161c.js"><link rel="prefetch" href="/assets/js/9.e59b2424.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.6514b516.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Basic Containers </span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="create-and-access-aks"><a href="#create-and-access-aks" class="header-anchor">#</a> Create and Access AKS</h1> <p>In this exercise  we will create a Kubernetes cluster that can autoscale and is configured to pull images  automatically from our registry . To achieve this so we will:</p> <ul><li>Use the Azure CLI</li> <li>Configure your local access credentials to control your cluster using kubectl</li> <li>Take some first steps</li> <li>Run our first pod</li></ul> <h2 id="create-the-cluster"><a href="#create-the-cluster" class="header-anchor">#</a> Create the cluster</h2> <ul><li>Create resoruce group for cluster</li></ul> <div class="language- extra-class"><pre class="language-text"><code>az group create --location westeurope --name $resourceGroup 
+</code></pre></div><ul><li>Create AKS: The following script creates an AKS with the following configuration</li></ul> <table><thead><tr><th>Parameter</th> <th>Description</th></tr></thead> <tbody><tr><td>--resource-group</td> <td>The resource group where the AKS cluster will be created</td></tr> <tr><td>--nodepool-name</td> <td>Name of the nodepool where our apps will run</td></tr> <tr><td>--attach-acr</td> <td>The resourceid or name of the ACR registry. This is the name of the registry in the Registry overview page. Alternatively you can execute the following command   <code>az acr show --name ivanacrdemo --query id</code></td></tr> <tr><td>Registry name</td> <td>Enter a unique name and make a note of it for later.</td></tr> <tr><td>--min-count</td> <td>The min number of nodes that will run when using cluster-autoscaler. When the cluster down scales it will not go below this value</td></tr> <tr><td>--max-count</td> <td>The max numebr of nodes that the cluster auto scaler will scale to</td></tr> <tr><td>--zones 3</td> <td>Spread the node pool vms across multiple zones for resilency. Can be 1,2,3. This indicates how many zones it should be spread across</td></tr> <tr><td>--enable-cluster-autoscaler</td> <td>Enabled cluster auto scaler</td></tr> <tr><td>--kubernetes-version</td> <td>The version of kubernetes to deploy</td></tr></tbody></table> <ul><li>Set variables</li></ul> <div class="language- extra-class"><pre class="language-text"><code>## Set Variables 
+RESOURCE_GROUP=&quot;ivanresourcegroup&quot;
+AKS_CLUSTER=&quot;mysimpleaks&quot;
+ACR_REGISTRY=&quot;ivanacrdemo&quot;
+</code></pre></div><ul><li>Create Cluster</li></ul> <div class="language- extra-class"><pre class="language-text"><code>## Create Cluster 
+az aks create \
+ --resource-group $RESOURCE_GROUP \
+ --node-vm-size=Standard_D2s_v3 \
+ --kubernetes-version=1.20.9 \
+ --name $AKS_CLUSTER \
+ --nodepool-name=&quot;apppool&quot; \
+ --enable-cluster-autoscaler \
+ --min-count 1 \
+ --max-count 2 \
+ --zones 3 \
+ --attach-acr $ACR_REGISTRY \
+ --node-count 1 \
+ --generate-ssh-keys
+</code></pre></div><ul><li>Output</li></ul> <div class="language- extra-class"><pre class="language-text"><code> ivan@Azure:~$ az aks create \
+&gt;  --resource-group $RESOURCE_GROUP \
+&gt;  --node-vm-size=Standard_D2s_v3 \
+&gt;  --kubernetes-version=1.20.9 \
+&gt;  --name $AKS_CLUSTER \
+&gt;  --nodepool-name=&quot;apppool&quot; \
+&gt;  --enable-cluster-autoscaler \
+&gt;  --min-count 1 \
+&gt;  --max-count 2 \
+&gt;  --zones 3 \
+&gt;  --attach-acr $ACR_REGISTRY \
+&gt;  --node-count 1 \
+&gt;  --generate-ssh-keys
+AAD role propagation done[############################################]  100.0000%{
+  &quot;aadProfile&quot;: null,
+  &quot;addonProfiles&quot;: null,
+  &quot;agentPoolProfiles&quot;: [
+    {
+      &quot;availabilityZones&quot;: [
+        &quot;3&quot;
+      ],
+      &quot;count&quot;: 1,
+      &quot;enableAutoScaling&quot;: true,
+      &quot;enableEncryptionAtHost&quot;: false,
+      &quot;enableFips&quot;: false,
+      &quot;enableNodePublicIp&quot;: false,
+      &quot;enableUltraSsd&quot;: false,
+      &quot;gpuInstanceProfile&quot;: null,
+      &quot;kubeletConfig&quot;: null,
+      &quot;kubeletDiskType&quot;: &quot;OS&quot;,
+      &quot;linuxOsConfig&quot;: null,
+      &quot;maxCount&quot;: 2,
+      &quot;maxPods&quot;: 110,
+      &quot;minCount&quot;: 1,
+      &quot;mode&quot;: &quot;System&quot;,
+      &quot;name&quot;: &quot;apppool&quot;,
+      &quot;nodeImageVersion&quot;: &quot;AKSUbuntu-1804gen2containerd-2021.09.28&quot;,
+      &quot;nodeLabels&quot;: null,
+      &quot;nodePublicIpPrefixId&quot;: null,
+      &quot;nodeTaints&quot;: null,
+      &quot;orchestratorVersion&quot;: &quot;1.20.9&quot;,
+      &quot;osDiskSizeGb&quot;: 128,
+      &quot;osDiskType&quot;: &quot;Managed&quot;,
+      &quot;osSku&quot;: &quot;Ubuntu&quot;,
+      &quot;osType&quot;: &quot;Linux&quot;,
+      &quot;podSubnetId&quot;: null,
+      &quot;powerState&quot;: {
+        &quot;code&quot;: &quot;Running&quot;
+      },
+      &quot;provisioningState&quot;: &quot;Succeeded&quot;,
+      &quot;proximityPlacementGroupId&quot;: null,
+      &quot;scaleDownMode&quot;: null,
+      &quot;scaleSetEvictionPolicy&quot;: null,
+      &quot;scaleSetPriority&quot;: null,
+      &quot;spotMaxPrice&quot;: null,
+      &quot;tags&quot;: null,
+      &quot;type&quot;: &quot;VirtualMachineScaleSets&quot;,
+      &quot;upgradeSettings&quot;: null,
+      &quot;vmSize&quot;: &quot;Standard_D2s_v3&quot;,
+      &quot;vnetSubnetId&quot;: null
+    }
+  ],
+  &quot;apiServerAccessProfile&quot;: null,
+  &quot;autoScalerProfile&quot;: {
+    &quot;balanceSimilarNodeGroups&quot;: &quot;false&quot;,
+    &quot;expander&quot;: &quot;random&quot;,
+    &quot;maxEmptyBulkDelete&quot;: &quot;10&quot;,
+    &quot;maxGracefulTerminationSec&quot;: &quot;600&quot;,
+    &quot;maxNodeProvisionTime&quot;: &quot;15m&quot;,
+    &quot;maxTotalUnreadyPercentage&quot;: &quot;45&quot;,
+    &quot;newPodScaleUpDelay&quot;: &quot;0s&quot;,
+    &quot;okTotalUnreadyCount&quot;: &quot;3&quot;,
+    &quot;scaleDownDelayAfterAdd&quot;: &quot;10m&quot;,
+    &quot;scaleDownDelayAfterDelete&quot;: &quot;10s&quot;,
+    &quot;scaleDownDelayAfterFailure&quot;: &quot;3m&quot;,
+    &quot;scaleDownUnneededTime&quot;: &quot;10m&quot;,
+    &quot;scaleDownUnreadyTime&quot;: &quot;20m&quot;,
+    &quot;scaleDownUtilizationThreshold&quot;: &quot;0.5&quot;,
+    &quot;scanInterval&quot;: &quot;10s&quot;,
+    &quot;skipNodesWithLocalStorage&quot;: &quot;false&quot;,
+    &quot;skipNodesWithSystemPods&quot;: &quot;true&quot;
+  },
+  &quot;autoUpgradeProfile&quot;: null,
+  &quot;azurePortalFqdn&quot;: &quot;mysimpleak-ivanresourcegrou-420752-9a4fdf47.portal.hcp.westeurope.azmk8s.io&quot;,
+  &quot;disableLocalAccounts&quot;: null,
+  &quot;diskEncryptionSetId&quot;: null,
+  &quot;dnsPrefix&quot;: &quot;mysimpleak-ivanresourcegrou-420752&quot;,
+  &quot;enablePodSecurityPolicy&quot;: null,
+  &quot;enableRbac&quot;: true,
+  &quot;extendedLocation&quot;: null,
+  &quot;fqdn&quot;: &quot;mysimpleak-ivanresourcegrou-420752-9a4fdf47.hcp.westeurope.azmk8s.io&quot;,
+  &quot;fqdnSubdomain&quot;: null,
+  &quot;httpProxyConfig&quot;: null,
+  &quot;id&quot;: &quot;/subscriptions/xxxx/resourcegroups/ivanresourcegroup/providers/Microsoft.ContainerService/managedClusters/mysimpleaks&quot;,
+  &quot;identity&quot;: {
+    &quot;principalId&quot;: &quot;xxxx&quot;,
+    &quot;tenantId&quot;: &quot;xxxx&quot;,
+    &quot;type&quot;: &quot;SystemAssigned&quot;,
+    &quot;userAssignedIdentities&quot;: null
+  },
+  &quot;identityProfile&quot;: {
+    &quot;kubeletidentity&quot;: {
+      &quot;clientId&quot;: &quot;b0be0d34-1900-4a46-af2d-58cdf7ea6760&quot;,
+      &quot;objectId&quot;: &quot;b8962aa9-402c-4aa1-9172-26c9ecbd7c02&quot;,
+      &quot;resourceId&quot;: &quot;/subscriptions/4207529e-1711-48d4-bb4sssss/resourcegroups/MC_ivanresourcegroup_mysimpleaks_westeurope/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mysimpleaks-agentpool&quot;
+    }
+  },
+  &quot;kubernetesVersion&quot;: &quot;1.20.9&quot;,
+  &quot;linuxProfile&quot;: {
+    &quot;adminUsername&quot;: &quot;azureuser&quot;,
+    &quot;ssh&quot;: {
+      &quot;publicKeys&quot;: [
+        {
+          &quot;keyData&quot;: &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2mrO2PzMafQ9hucBGhvlguvz/J46tLpD+TW0vSH2bvEuQXehpCUKX/dn9I3hin8+U8ybhSiTWV1fDpvguORYdA+VexxUPFyYr1L1ytdyGZKPKfWQ7BgsZd+VaOV++u0ieQ0nycL4PTt7d66oX5BwomioXKTC5iIyHUdqL5nmkLiJgLs98hmk8uHqVkzK9gO0+lrWBQc+GKi2WV+6mDm54VYhRSSllzo98MwrK8P5IsYCK9dtWxv6xzE67hc7DUFdOd0+Cqc1uqdLWj8bVzN61rlEGihNFRttKGWluK0Xz5WipVBqgxhC7H/yTWI8a6ZQhIqV2VZMDPwB7vqeb5ied7Xd&quot;
+        }
+      ]
+    }
+  },
+  &quot;location&quot;: &quot;westeurope&quot;,
+  &quot;maxAgentPools&quot;: 100,
+  &quot;name&quot;: &quot;mysimpleaks&quot;,
+  &quot;networkProfile&quot;: {
+    &quot;dnsServiceIp&quot;: &quot;10.0.0.10&quot;,
+    &quot;dockerBridgeCidr&quot;: &quot;172.17.0.1/16&quot;,
+    &quot;loadBalancerProfile&quot;: {
+      &quot;allocatedOutboundPorts&quot;: null,
+      &quot;effectiveOutboundIPs&quot;: [
+        {
+          &quot;id&quot;: &quot;/subscriptions/4207529e-1711-48d4-bb4a-01836e073bbb/resourceGroups/MC_ivanresourcegroup_mysimpleaks_westeurope/providers/Microsoft.Network/publicIPAddresses/9acfcb09-ca2c-40e5-88ee-d428c3fddb23&quot;,
+          &quot;resourceGroup&quot;: &quot;MC_ivanresourcegroup_mysimpleaks_westeurope&quot;
+        }
+      ],
+      &quot;idleTimeoutInMinutes&quot;: null,
+      &quot;managedOutboundIPs&quot;: {
+        &quot;count&quot;: 1
+      },
+      &quot;outboundIPs&quot;: null,
+      &quot;outboundIpPrefixes&quot;: null
+    },
+    &quot;loadBalancerSku&quot;: &quot;Standard&quot;,
+    &quot;natGatewayProfile&quot;: null,
+    &quot;networkMode&quot;: null,
+    &quot;networkPlugin&quot;: &quot;kubenet&quot;,
+    &quot;networkPolicy&quot;: null,
+    &quot;outboundType&quot;: &quot;loadBalancer&quot;,
+    &quot;podCidr&quot;: &quot;10.244.0.0/16&quot;,
+    &quot;serviceCidr&quot;: &quot;10.0.0.0/16&quot;
+  },
+  &quot;nodeResourceGroup&quot;: &quot;MC_ivanresourcegroup_mysimpleaks_westeurope&quot;,
+  &quot;podIdentityProfile&quot;: null,
+  &quot;powerState&quot;: {
+    &quot;code&quot;: &quot;Running&quot;
+  },
+  &quot;privateFqdn&quot;: null,
+  &quot;privateLinkResources&quot;: null,
+  &quot;provisioningState&quot;: &quot;Succeeded&quot;,
+  &quot;resourceGroup&quot;: &quot;ivanresourcegroup&quot;,
+  &quot;securityProfile&quot;: null,
+  &quot;servicePrincipalProfile&quot;: {
+    &quot;clientId&quot;: &quot;msi&quot;,
+    &quot;secret&quot;: null
+  },
+  &quot;sku&quot;: {
+    &quot;name&quot;: &quot;Basic&quot;,
+    &quot;tier&quot;: &quot;Free&quot;
+  },
+  &quot;tags&quot;: null,
+  &quot;type&quot;: &quot;Microsoft.ContainerService/ManagedClusters&quot;,
+  &quot;windowsProfile&quot;: null
+} 
+</code></pre></div><ul><li>The above output shows the cluster is up and running</li></ul> <h2 id="browse-aks-resources"><a href="#browse-aks-resources" class="header-anchor">#</a> Browse AKS Resources</h2> <p>The az aks create command created a second resource group named MC_adc-aks-rg_adc-cluster_westeurope containing all resources provisioned for our AKS cluster: The resources are implementation detail behind the cluster. The resources created under this resource groups should not be tocuhed and instead these will be managed by the AKS service.
+<img src="/assets/img/aksworkloads.3a80f9a3.png" alt="webapp">
+To view various details an status of the AKS cluster you can navigate to the cluster resource by either searching for AKS in the search bar or navigating to the resource group</p> <ul><li>Navigate to AKS resouce in the portal.</li> <li>To view deployment details navigate workloads. Here you can see the various containers and deployments which are currently running in AKS. Additonaly namespaces, pods and configurations can be viewed here
+<img src="/assets/img/aksworkloads.3a80f9a3.png" alt="webapp"></li> <li>IT is possible to modifiy kubernetes deployments directly in portal.
+<img src="/assets/img/modify.72d79693.png" alt="webapp"></li></ul> <h2 id="access-the-cluster-with-kubectl"><a href="#access-the-cluster-with-kubectl" class="header-anchor">#</a> Access the cluster with kubectl</h2> <p>While accessing the cluster via the portal is convienent, the most common way users interacte with kubernetres is via the command line tool <code>kubectl</code>
+To authenticate us against the cluster Kubernetes uses client certificates and access tokens.
+To obtain these access credentials for our newly created cluster we use the <code>az aks get-credentials</code> command:</p> <h3 id="get-credentials"><a href="#get-credentials" class="header-anchor">#</a> Get credentials</h3> <p>To pull down credentials execute the following command</p> <div class="language- extra-class"><pre class="language-text"><code>az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER
+</code></pre></div><h3 id="perform-commands"><a href="#perform-commands" class="header-anchor">#</a> Perform commands</h3> <ul><li>The following command show all namespaces in the cluster</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ivan@Azure:~$ kubectl get namespaces -A
+NAME              STATUS   AGE
+default           Active   40m
+kube-node-lease   Active   40m
+kube-public       Active   40m
+kube-system       Active   40m
+</code></pre></div><ul><li>The following command show all pod running in the cluster</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ivan@Azure:~$ kubectl  get pod -A
+NAMESPACE     NAME                                  READY   STATUS    RESTARTS   AGE
+kube-system   azure-ip-masq-agent-4hhkd             1/1     Running   0          38m
+kube-system   coredns-autoscaler-54d55c8b75-bx9nd   1/1     Running   0          39m
+kube-system   coredns-d4866bcb7-cv7gs               1/1     Running   0          38m
+kube-system   coredns-d4866bcb7-jnm69               1/1     Running   0          39m
+kube-system   kube-proxy-hlcfj                      1/1     Running   0          38m
+kube-system   metrics-server-569f6547dd-nfx2t       1/1     Running   0          39m
+kube-system   tunnelfront-74454f7fd6-j6q8t          1/1     Running   0          39m
+</code></pre></div><ul><li>the following convience command create a simple nginx deployment callled nginx</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ivan@Azure:~$ kubectl create deployment nginx  --image nginx
+deployment.apps/nginx created
+</code></pre></div><ul><li>once created execute the following command to show the status of the deployment.  A deployment controls and orchestrates a pod. if the pod goes down then the deployment ensures a second pod comes up</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ivan@Azure:~$ kubectl get deployment
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   1/1     1            1           18s
+</code></pre></div><ul><li>View the pods belonging to the deployment</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ivan@Azure:~$ kubectl get po
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-6799fc88d8-sbbrx   1/1     Running   0          12s
+</code></pre></div><ul><li>clean up the resources. Aftet theis command is executed check if the pods are still there</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ivan@Azure:~$ kubectl delete deployment nginx
+deployment.apps &quot;nginx&quot; deleted
+ivan@Azure:~$
+ivan@Azure:~$ kubectl get po
+No resources found in default namespace.
+ivan@Azure:~$
+</code></pre></div><h2 id="conculsion"><a href="#conculsion" class="header-anchor">#</a> Conculsion</h2> <p>In this lab we successfully deployed a kubernetes cluster attached to our registry and deployed with node auto-scaler.</p></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.118d21cd.js" defer></script><script src="/assets/js/2.33b91e66.js" defer></script><script src="/assets/js/12.87630292.js" defer></script>
+  </body>
+</html>
