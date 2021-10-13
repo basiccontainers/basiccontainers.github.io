@@ -68,7 +68,7 @@ Create a new staging slot
 ### option 1: Configure new image in the portal CLI
 The following commans sets the Docker container for the App Service app.
 ```
-az webapp config container set -s preprod --docker-custom-image-name $acrname.azurecr.io/webimage:v3 -g $resourceGroup --name $appname  --docker-registry-server-url  https://$acrname.azurecr.io
+az webapp config container set -s preprod --docker-custom-image-name $acr.azurecr.io/webimage:v2 -g $resourceGroup --name $appname  --docker-registry-server-url  https://$acr.azurecr.io
 ```
 
 ### option 2: Configure the Container in Portal 
