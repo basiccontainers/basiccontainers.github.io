@@ -24,6 +24,7 @@ In the example scenario, you have uploaded the image for the web app to Azure Co
   ![webapp](./img/4webapp.png)
 - Select Next: Docker >.
 - On the Docker tab, enter the following values for each setting.
+
 | Setting   | value |
 | ------------- | ------------- |
 |Options|	Single Container|
